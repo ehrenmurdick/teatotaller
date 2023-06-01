@@ -1,26 +1,31 @@
 module Main (main) where
 
 import Oak
+import Increment as Increment
 
-import Prelude hiding (div)
+import Prelude
+  ( Unit
+  , bind
+  , map
+  , mempty
+  )
 import Effect
 
-type Model = { number :: Int }
+type Model =
+  { increment :: Increment.Model
+  , message :: String
+  }
 
 data Msg
-  = Inc
-  | Dec
+  = IncrementMsg Increment.Msg
+  | Other
 
 view :: Model -> Html Msg
 view model = div []
-  [ div []
-      [ button [ onClick Inc ] [ text "+" ]
-      , text $ show model.number
-      ]
-  , div []
-      [ button [ onClick Dec ] [ text "-" ]
-      , text $ show model.number
-      ]
+  [ text model.message
+  , (map IncrementMsg (Increment.view model.increment))
+  , text "this is the parent app"
+  , div [] [ button [ onClick Other ] [ text "Other" ] ]
   ]
 
 next :: Msg -> Model -> (Msg -> Effect Unit) -> Effect Unit
@@ -28,11 +33,11 @@ next msg mod h = mempty
 
 update :: Msg -> Model -> Model
 update msg model = case msg of
-  Inc -> model { number = model.number + 1 }
-  Dec -> model { number = model.number - 1 }
+  Other -> model { message = "Other event fired in parent" }
+  IncrementMsg m -> model { increment = Increment.update m model.increment }
 
 init :: Model
-init = { number: 0 }
+init = { message: "", increment: Increment.init }
 
 app :: App Msg Model
 app = createApp { init, view, update, next }
