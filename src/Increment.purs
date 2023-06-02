@@ -17,6 +17,10 @@ data Msg
   = Inc
   | Dec
 
+instance showMsg :: Show Msg where
+  show Inc = "Inc"
+  show Dec = "Dec"
+
 view :: Model -> Html Msg
 view model = div []
   [ text "this is in the child"

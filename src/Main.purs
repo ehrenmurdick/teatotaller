@@ -2,12 +2,16 @@ module Main (main) where
 
 import Oak
 import Increment as Increment
+import Oak.Debug
 
 import Prelude
   ( Unit
+  , class Show
+  , (<>)
   , bind
   , map
   , mempty
+  , show
   )
 import Effect
 
@@ -19,6 +23,10 @@ type Model =
 data Msg
   = IncrementMsg Increment.Msg
   | Other
+
+instance showMsg :: Show Msg where
+  show (IncrementMsg m) = "Subapp " <> show m
+  show Other = "Other"
 
 view :: Model -> Html Msg
 view model = div []
@@ -44,6 +52,6 @@ app = createApp { init, view, update, next }
 
 main :: Effect Unit
 main = do
-  rootNode <- runApp app Nothing
+  rootNode <- runApp (debugApp app) Nothing
   container <- getElementById "app"
   appendChildNode container rootNode
