@@ -107,7 +107,6 @@ in  upstream
       { dependencies =
           [ "console"
           , "effect"
-          , "either"
           , "foldable-traversable"
           , "functions"
           , "maybe"
