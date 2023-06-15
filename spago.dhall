@@ -15,11 +15,15 @@ to generate this file without the comments in this block.
   [ "aff"
   , "arrays"
   , "console"
+  , "control"
   , "effect"
+  , "either"
   , "fetch"
   , "foldable-traversable"
+  , "integers"
   , "oak"
   , "prelude"
+  , "simple-json"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
