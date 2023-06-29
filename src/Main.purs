@@ -14,6 +14,7 @@ import Increment as Increment
 import Oak
 import Oak.Debug (debugApp)
 import Simple.JSON as JSON
+import Oak.Html.Attribute (for, id_)
 
 import Prelude
   ( Unit
@@ -63,10 +64,13 @@ view model = div []
   , (map IncrementMsg (Increment.view model.increment))
   , text "this is the parent app"
   , div [] [ button [ onClick GoGet ] [ text "Perform GET" ] ]
-  , div [] do
-      x <- 1 .. 10
-      guard (even x)
-      pure $ div [] [ text (show x) ]
+  , form [] do
+      x <- [ "name", "username", "email" ]
+      [ div [ for x ]
+          [ label [ for x ] [ text x ]
+          , input [ id_ x ] []
+          ]
+      ]
   ]
 
 getJson :: ∀ a. JSON.ReadForeign a => String -> Aff a
